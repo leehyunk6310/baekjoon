@@ -1,53 +1,64 @@
 #include <iostream>
 using namespace std;
 
-int T, N;
-int col[11];    // 각 행에 놓는 열의 위치
-int answer = 0;
+// idx는 행을, 값은 열을 의미한다.
+int cols[10];
+int N;
+int answer;
 
-bool check(int row)
+void queens(int row)
 {
-    for (int i=0; i<row; i++)
-    {
-        if (col[i] == col[row] || abs(col[row] - col[i]) == row-i)
-            return false;
-    }
-    return true;
-}
+	if (row == N)
+	{
+		answer++;
+		return;
+	}
+	// 매 열에 대하여
+	for (int i = 0; i < N; i++)
+	{
+		int col = i;
+		bool flag = true;
 
-void queen(int row)
-{
-    // 모든 퀸을 다 놓음
-    if (row == N)
-    {
-        answer += 1;
-        return;
-    }
-
-    for (int i=0; i<N; i++)
-    {
-        col[row] = i;
-        if (check(row))
-        {
-            queen(row+1);
-        }
-
-    }
+		for (int j = 0; j < row; j++)
+		{
+			// 같은 열이거나, 대각선에 있는 경우
+			if (cols[j] == col || abs(col - cols[j]) == row-j)
+			{
+				flag = false;
+				break;
+			}
+		}
+		if (flag)
+		{
+			cols[row] = col;
+			queens(row + 1);
+		}
+	}
 }
 
 int main()
 {
-    cin >> T;
-    for (int tc=0; tc<T; tc++)
-    {        
-        cin >> N;
-        answer = 0;
-        for (int i=0; i<=10; i++)
-            col[i] = 0;
+	int test_case;
+	int T;
+	cin >> T;
 
-        queen(0);
+	for (test_case = 1; test_case <= T; ++test_case)
+	{
+		answer = 0;
+		for (int i = 0; i < N; i++)
+			cols[i] = 0;
 
-        cout << "#" << tc +1<< " " << answer << "\n";
-    }
-    
+		cin >> N;
+
+		// 첫 행의 각 열에 대해 놓으면서 진행한다.
+		for (int i = 0; i < N; i++)
+		{
+			cols[0] = i;
+			queens(1);
+		}
+
+		cout << "#" << test_case << " " << answer << '\n';
+	}
+
+	return 0;
 }
