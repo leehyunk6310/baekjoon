@@ -1,193 +1,125 @@
-#include <iostream>
-#include <unordered_map>
-using namespace std;
+/////////////////////////////////////////////////////////////////////////////////////////////
+// 기본 제공코드는 임의 수정해도 관계 없습니다. 단, 입출력 포맷 주의
+// 아래 표준 입출력 예제 필요시 참고하세요.
+// 표준 입력 예제
+// int a;
+// double b;
+// char g;
+// String var;
+// long AB;
+// a = sc.nextInt();                           // int 변수 1개 입력받는 예제
+// b = sc.nextDouble();                        // double 변수 1개 입력받는 예제
+// g = sc.nextByte();                          // char 변수 1개 입력받는 예제
+// var = sc.next();                            // 문자열 1개 입력받는 예제
+// AB = sc.nextLong();                         // long 변수 1개 입력받는 예제
+/////////////////////////////////////////////////////////////////////////////////////////////
+// 표준 출력 예제
+// int a = 0;                            
+// double b = 1.0;               
+// char g = 'b';
+// String var = "ABCDEFG";
+// long AB = 12345678901234567L;
+//System.out.println(a);                       // int 변수 1개 출력하는 예제
+//System.out.println(b); 		       						 // double 변수 1개 출력하는 예제
+//System.out.println(g);		       						 // char 변수 1개 출력하는 예제
+//System.out.println(var);		       				   // 문자열 1개 출력하는 예제
+//System.out.println(AB);		       				     // long 변수 1개 출력하는 예제
+/////////////////////////////////////////////////////////////////////////////////////////////
+import java.util.*;
+import java.io.FileInputStream;
 
-int main()
+/*
+   사용하는 클래스명이 Solution 이어야 하므로, 가급적 Solution.java 를 사용할 것을 권장합니다.
+   이러한 상황에서도 동일하게 java Solution 명령으로 프로그램을 수행해볼 수 있습니다.
+ */
+class Solution
 {
-	int test_case;
-	int T;
-	cin >> T;
-	
-	for (test_case = 1; test_case <= T; ++test_case)
-	{
-		int board[9][9];
-		bool flag = true;
-
-		for (int i = 0; i < 9; i++)
-		{
-			for (int j = 0; j < 9; j++)
-			{
-				cin >> board[i][j];				
-			}			
-		}		
-		// 가로줄에 대하여 체크
-		for (int i = 0; i < 9; i++)
-		{
-			unordered_map<int, int> row;
-
-			for (int j = 0; j < 9; j++)
-			{
-				row[board[i][j]]++;
-			}
-
-			if (row.size() != 9)
-			{
-				flag = false;
-				break;
-			}
+    public static boolean check(int row, int col, int arr[][]) {
+		HashMap<Integer, Integer> hm = new HashMap<>();
+		hm.put(arr[row-1][col-1], 1);
+		hm.put(arr[row-1][col], 1);
+		hm.put(arr[row-1][col+1], 1);
+		hm.put(arr[row][col-1], 1);
+		hm.put(arr[row][col], 1);
+		hm.put(arr[row][col+1], 1);
+		hm.put(arr[row+1][col-1], 1);
+		hm.put(arr[row+1][col], 1);
+		hm.put(arr[row+1][col+1], 1);
+		if (hm.size() != 9) {
+			return false;
 		}
-
-		// 세로줄에 대하여 체크
-		if (flag)
-		{
-			for (int i = 0; i < 9; i++)
-			{
-				unordered_map<int, int> col;
-
-				for (int j = 0; j < 9; j++)
-				{
-					col[board[j][i]]++;
-				}
-
-				if (col.size() != 9)
-				{
-					flag = false;
-					break;
-				}
-			}
-		}
-
-		// 각 칸에 대하여 체크
-		if (flag)
-		{
-			unordered_map<int, int> m;
-
-			for (int i = 0; i < 3; i++)
-			{
-				for (int j = 0; j < 3; j++)
-				{
-					m[board[i][j]]++;
-				}
-			}
-			if (m.size() != 9)
-			{
-				flag = false;				
-			}
-			m.clear();
-
-			for (int i = 0; i < 3; i++)
-			{
-				for (int j = 3; j < 6; j++)
-				{
-					m[board[i][j]]++;
-				}
-			}
-			if (m.size() != 9)
-			{
-				flag = false;				
-			}
-			m.clear();
-
-			for (int i = 0; i < 3; i++)
-			{
-				for (int j = 6; j < 9; j++)
-				{
-					m[board[i][j]]++;
-				}
-			}
-			if (m.size() != 9)
-			{
-				flag = false;				
-			}
-			m.clear();
-
-			for (int i = 3; i < 6; i++)
-			{
-				for (int j = 0; j < 3; j++)
-				{
-					m[board[i][j]]++;
-				}
-			}
-			if (m.size() != 9)
-			{
-				flag = false;				
-			}
-			m.clear();
-
-			for (int i = 3; i < 6; i++)
-			{
-				for (int j = 3; j < 6; j++)
-				{
-					m[board[i][j]]++;
-				}
-			}
-			if (m.size() != 9)
-			{
-				flag = false;				
-			}
-			m.clear();
-
-			for (int i = 3; i < 6; i++)
-			{
-				for (int j = 6; j < 9; j++)
-				{
-					m[board[i][j]]++;
-				}
-			}
-			if (m.size() != 9)
-			{
-				flag = false;				
-			}
-			m.clear();
-
-			for (int i = 6; i < 9; i++)
-			{
-				for (int j = 0; j < 3; j++)
-				{
-					m[board[i][j]]++;
-				}
-			}
-			if (m.size() != 9)
-			{
-				flag = false;				
-			}
-			m.clear();
-
-			for (int i = 6; i < 9; i++)
-			{
-				for (int j = 3; j < 6; j++)
-				{
-					m[board[i][j]]++;
-				}
-			}
-			if (m.size() != 9)
-			{
-				flag = false;				
-			}
-			m.clear();
-
-			for (int i = 6; i < 9; i++)
-			{
-				for (int j = 6; j < 9; j++)
-				{
-					m[board[i][j]]++;
-				}
-			}
-			if (m.size() != 9)
-			{
-				flag = false;				
-			}
-			m.clear();
-		}
-
-		cout << "#" << test_case << " ";
-		if (flag)
-			cout << 1;
-		else
-			cout << 0;
-
-		cout << '\n';
+		return true;
 	}
+    
+	public static void main(String args[]) throws Exception
+	{
+		/*
+		   아래의 메소드 호출은 앞으로 표준 입력(키보드) 대신 input.txt 파일로부터 읽어오겠다는 의미의 코드입니다.
+		   여러분이 작성한 코드를 테스트 할 때, 편의를 위해서 input.txt에 입력을 저장한 후,
+		   이 코드를 프로그램의 처음 부분에 추가하면 이후 입력을 수행할 때 표준 입력 대신 파일로부터 입력을 받아올 수 있습니다.
+		   따라서 테스트를 수행할 때에는 아래 주석을 지우고 이 메소드를 사용하셔도 좋습니다.
+		   단, 채점을 위해 코드를 제출하실 때에는 반드시 이 메소드를 지우거나 주석 처리 하셔야 합니다.
+		 */
+		//System.setIn(new FileInputStream("res/input.txt"));
 
-	return 0;
+		/*
+		   표준입력 System.in 으로부터 스캐너를 만들어 데이터를 읽어옵니다.
+		 */
+		Scanner sc = new Scanner(System.in);
+		int T;
+		T=sc.nextInt();
+		/*
+		   여러 개의 테스트 케이스가 주어지므로, 각각을 처리합니다.
+		*/
+
+		for(int test_case = 1; test_case <= T; test_case++)
+		{
+			int arr[][] = new int[9][9];
+			HashMap<Integer, Integer> hm1 = new HashMap<>();
+			HashMap<Integer, Integer> hm2 = new HashMap<>();
+			boolean flag = true;
+			
+			for (int i=0; i<9; i++ ) {
+				for (int j=0; j<9; j++) {
+					arr[i][j] = sc.nextInt();
+				}
+			}
+			
+			// 행에 대해 체크
+			for (int i=0; i<9; i++) {							
+				for (int j=0; j<9; j++) {
+					hm1.put(arr[i][j], 1);
+				}
+				if (hm1.size() != 9) {
+					flag = false;
+				}
+				hm1.clear();
+			}
+			// 열에 대해 체크
+			for (int i=0; i<9; i++) {							
+				for (int j=0; j<9; j++) {
+					hm2.put(arr[j][i], 1);
+				}
+				if (hm2.size() != 9) {
+					flag = false;
+				}
+				hm2.clear();
+			}
+			// 각 3x3에 대한 체크
+			if (flag) {
+				flag = check(1,1, arr) && check(1,4,arr) && check(1,7,arr) &&
+						check(4,1, arr) && check(4,4,arr) && check(4,7,arr) &&
+						check(7,1, arr) && check(7,4,arr) && check(7,7,arr);
+			}
+			
+			if (flag) {
+				System.out.println("#" + test_case + " " + 1);
+			}
+			else {
+				System.out.println("#" + test_case + " " + 0);
+			}
+		}
+			
+		
+	}
 }
